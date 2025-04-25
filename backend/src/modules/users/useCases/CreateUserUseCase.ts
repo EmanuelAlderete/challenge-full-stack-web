@@ -1,4 +1,4 @@
-import { RequestUserDto } from "../dtos/ResquestUserDto";
+import { RequestUserDto } from "../dtos/RequestUserDto";
 import { IUserRepository } from "../repositories/IUserRepository";
 
 export class CreateUserUseCase {

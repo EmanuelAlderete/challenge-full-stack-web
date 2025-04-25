@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { loggerMiddleware } from "../middlewares";
+import UserRoutes from ".././../../../modules/users/routes/userRoutes";
 
 const router = Router();
 
@@ -13,8 +14,10 @@ router.get("/api/ping", (_req, res) => {
 });
 
 // Custom 404 Error
-router.use("/", (req, res) => {
-  res.status(404).json({ error: "API route not found" });
-});
+// router.use("/", (req, res) => {
+//   res.status(404).json({ error: "API route not found" });
+// });
 
-export { router };
+router.use("/api/users", UserRoutes);
+
+export default router;
