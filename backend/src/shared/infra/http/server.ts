@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import cors from "cors";
-import { routes } from "./routes/routes";
+import { router } from "./routes/router";
 
 // Load .env variables
 dotenv.config();
@@ -23,7 +23,7 @@ app.use(
 app.use(express.json());
 
 // Import routes
-app.use(routes);
+app.use(router);
 
 const PORT = process.env.PORT || 3000;
 
