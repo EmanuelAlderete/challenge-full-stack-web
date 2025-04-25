@@ -10,7 +10,7 @@ routes.get("/api/ping", (_req, res) => {
 });
 
 // Custom 404 Error
-routes.use("/api", (req, res) => {
+routes.use("/", (req, res) => {
   res.status(404).json({ error: "API route not found" });
 });
 
