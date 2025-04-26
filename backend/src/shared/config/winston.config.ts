@@ -1,4 +1,4 @@
-import { createLogger, format, transports, loggers, http } from "winston";
+import { createLogger, format, transports } from "winston";
 import path from "path";
 import { getContext } from "../utils/asyncContext";
 
@@ -10,12 +10,12 @@ const logger = createLogger({
     }),
     format.errors({ stack: true }),
     format.splat(),
-    format.printf((info) => {
+    format((info, opts) => {
       const context = getContext();
       const correlationId = context?.correlationId || "N/A";
-
-      return `${info.timestamp} <span class="math-inline">\{info\.level\} \[</span>{correlationId}] ${info.message}`;
-    }),
+      info.correlationId = correlationId;
+      return info;
+    })(),
     format.json()
   ),
   defaultMeta: { service: "BACKEND - NODE" },
@@ -23,26 +23,38 @@ const logger = createLogger({
     new transports.File({
       filename: path.join("logs", "error.log"),
       level: "error",
+      maxsize: 5242880,
+      maxFiles: 5,
     }),
     new transports.File({
       filename: path.join("logs", "http.log"),
       level: "http",
-    }),
-    new transports.File({
-      filename: path.join("logs", "warn.log"),
-      level: "warn",
-    }),
-    new transports.File({
-      filename: path.join("logs", "info.log"),
-      level: "info",
+      maxsize: 5242880,
+      maxFiles: 5,
     }),
   ],
 });
 
 if (process.env.NODE_ENV !== "production") {
+  const consoleFormat = format.combine(
+    format.timestamp({ format: "DD-MM-YYYY HH:mm:ss" }),
+    format.printf((info) => {
+      const context = getContext();
+      const correlationId = context?.correlationId || "N/A";
+      const message = info.stack
+        ? `${info.message}\n${info.stack}`
+        : info.message;
+      return `${
+        info.timestamp
+      } [${info.level.toLocaleUpperCase()}] [${correlationId}] ${message}`;
+    }),
+    format.colorize({ all: true })
+  );
+
   logger.add(
     new transports.Console({
-      format: format.combine(format.colorize(), format.simple()),
+      format: consoleFormat,
+      level: process.env.LOG_LEVEL || "http",
     })
   );
 }
