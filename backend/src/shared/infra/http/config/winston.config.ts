@@ -2,7 +2,7 @@ import { createLogger, format, transports, loggers, http } from "winston";
 import path from "path";
 
 export const logger = createLogger({
-  level: "http",
+  level: process.env.LOG_LEVEL || "http",
   format: format.combine(
     format.timestamp({
       format: "DD-MM-YYYY HH:mm:ss",

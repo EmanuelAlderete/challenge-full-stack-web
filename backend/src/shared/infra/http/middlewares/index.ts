@@ -1,3 +1,6 @@
-import { loggerMiddleware } from "./logger.middleware";
+import { ErrorLoggerMiddleware } from "./errorLogger.middleware";
+import { HttpLoggerMiddleware } from "./httpLogger.middleware";
 
-export { loggerMiddleware };
+const loggerMiddlewares = [ErrorLoggerMiddleware, HttpLoggerMiddleware];
+
+export default loggerMiddlewares;

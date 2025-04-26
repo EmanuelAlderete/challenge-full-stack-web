@@ -1,10 +1,10 @@
 import { Router } from "express";
-import { loggerMiddleware } from "../middlewares";
+import LoggerMiddlewares from "../middlewares";
 import UserRoutes from ".././../../../modules/users/routes/userRoutes";
 
 const router = Router();
 
-router.use(loggerMiddleware);
+router.use(LoggerMiddlewares);
 
 // Ping server
 router.get("/api/ping", (_req, res) => {
