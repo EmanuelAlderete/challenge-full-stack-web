@@ -1,4 +1,4 @@
-import { app, startServer } from "../../../../src/shared/infra/http/server";
+import { app, startServer } from "../../../shared/infra/http/server";
 import request from "supertest";
 import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
 
