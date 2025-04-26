@@ -2,7 +2,7 @@ import express from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import cors from "cors";
-import { router } from "./routes/router";
+import routes from "./routes/router";
 
 // Load .env variables
 dotenv.config();
@@ -23,12 +23,13 @@ app.use(
 app.use(express.json());
 
 // Import routes
-app.use(router);
+app.use("/", routes);
 
-const PORT = process.env.PORT || 3000;
+const startServer = (port: number = 3000) => {
+  const server = app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
+  return server;
+};
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
-
-export default app;
+export { app, startServer };

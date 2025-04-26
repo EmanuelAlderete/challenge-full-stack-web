@@ -1,9 +1,11 @@
 import { Router } from "express";
-import { loggerMiddleware } from "../middlewares";
+import LoggerMiddlewares from "../middlewares";
+import UserRoutes from "../../../../modules/users/routes/user.routes";
+import StudentsRoutes from "../../../../modules/students/routes/students.routes";
 
 const router = Router();
 
-router.use(loggerMiddleware);
+router.use(...LoggerMiddlewares);
 
 // Ping server
 router.get("/api/ping", (_req, res) => {
@@ -13,8 +15,11 @@ router.get("/api/ping", (_req, res) => {
 });
 
 // Custom 404 Error
-router.use("/", (req, res) => {
-  res.status(404).json({ error: "API route not found" });
-});
+// router.use("/", (req, res) => {
+//   res.status(404).json({ error: "API route not found" });
+// });
 
-export { router };
+router.use("/api/users", UserRoutes);
+router.use("/api/students", StudentsRoutes);
+
+export default router;
