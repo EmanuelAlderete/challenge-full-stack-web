@@ -1,5 +1,5 @@
 import { RequestUserDto } from "../dtos/RequestUserDto";
-import { IUserRepository } from "../repositories/IUserRepository";
+import { IUserRepository } from "../repositories/user.repository.interface";
 
 export class CreateUserUseCase {
   constructor(private userRepository: IUserRepository) {}

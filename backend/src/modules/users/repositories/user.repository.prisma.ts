@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
-import { IUserRepository } from "./IUserRepository";
+import { IUserRepository } from "./user.repository.interface";
 import { RequestUserDto } from "../dtos/RequestUserDto";
 import * as bcrypt from "bcryptjs";
 import logger from "../../../shared/config/winston.config";

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { RequestUserDto } from "../dtos/RequestUserDto";
 import { CreateUserUseCase } from "../useCases/CreateUserUseCase";
-import { UserRepositoryPrisma } from "../repositories/UserRepositoryPrisma";
+import { UserRepositoryPrisma } from "../repositories/user.repository.prisma";
 import logger from "../../../shared/config/winston.config";
 
 const userRepository = new UserRepositoryPrisma();

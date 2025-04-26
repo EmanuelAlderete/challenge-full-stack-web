@@ -1,10 +1,11 @@
 import { Router } from "express";
 import LoggerMiddlewares from "../middlewares";
-import UserRoutes from ".././../../../modules/users/routes/userRoutes";
+import UserRoutes from "../../../../modules/users/routes/user.routes";
+import StudentsRoutes from "../../../../modules/students/routes/students.routes";
 
 const router = Router();
 
-router.use(LoggerMiddlewares);
+router.use(...LoggerMiddlewares);
 
 // Ping server
 router.get("/api/ping", (_req, res) => {
@@ -19,5 +20,6 @@ router.get("/api/ping", (_req, res) => {
 // });
 
 router.use("/api/users", UserRoutes);
+router.use("/api/students", StudentsRoutes);
 
 export default router;
