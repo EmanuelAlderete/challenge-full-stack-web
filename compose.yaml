@@ -20,7 +20,7 @@ services:
       - postgres
     networks:
       - app-network
-    command: npm run dev
+    command: sh /app/entrypoint.sh
 
   # frontend:
   #   build:
