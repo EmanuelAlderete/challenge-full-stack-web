@@ -18,3 +18,14 @@ model User {
 
   @@map("users")
 }
+
+model Student {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String   @unique
+  ra         String   @unique
+  cpf        String   @unique
+  created_at DateTime @default(now())
+
+  @@map("students")
+}
