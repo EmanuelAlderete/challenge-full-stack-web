@@ -13,7 +13,7 @@ export class UserController {
       const { name, email, password } = req.body;
       const requestUserDto = new RequestUserDto(name, email, password);
       const user = await createUserUseCase.execute(requestUserDto);
-      res.status(201).json(user);
+      res.location(`/users/${user.id}`).status(201).json(user);
     } catch (error) {
       res.status(500).json({ message: "Failed to create user", error });
     }
