@@ -1,10 +1,35 @@
-import app from "../../../../src/shared/infra/http/server";
+import { app, startServer } from "../../../../src/shared/infra/http/server";
 import request from "supertest";
 import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
 
 const prisma = new PrismaClient();
 
+let serverInstance: any;
+
 describe("POST /api/users/register", () => {
+  beforeAll(async () => {
+    const testPort = process.env.TEST_PORT || 3001;
+    serverInstance = startServer(Number(testPort));
+    await new Promise((resolve) => setTimeout(resolve, 100));
+  });
+
+  afterAll(async () => {
+    if (serverInstance) {
+      await new Promise<void>((resolve, reject) => {
+        serverInstance.close((err: any) => {
+          if (err) {
+            console.error("Error closing test server:", err);
+            return reject(err);
+          }
+          console.log("Test server closed.");
+          resolve();
+        });
+      });
+    }
+
+    await prisma.$disconnect();
+  });
+
   beforeEach(async () => {
     await prisma.user.deleteMany();
   });
