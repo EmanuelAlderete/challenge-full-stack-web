@@ -1,6 +1,6 @@
 import app from "../../../../src/shared/infra/http/server";
 import request from "supertest";
-import { PrismaClient } from "../../../../generated/prisma";
+import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
 
 const prisma = new PrismaClient();
 
