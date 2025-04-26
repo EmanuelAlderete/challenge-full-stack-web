@@ -1,7 +1,8 @@
 import { createLogger, format, transports, loggers, http } from "winston";
 import path from "path";
+import { getContext } from "../utils/asyncContext";
 
-export const logger = createLogger({
+const logger = createLogger({
   level: process.env.LOG_LEVEL || "http",
   format: format.combine(
     format.timestamp({
@@ -9,6 +10,12 @@ export const logger = createLogger({
     }),
     format.errors({ stack: true }),
     format.splat(),
+    format.printf((info) => {
+      const context = getContext();
+      const correlationId = context?.correlationId || "N/A";
+
+      return `${info.timestamp} <span class="math-inline">\{info\.level\} \[</span>{correlationId}] ${info.message}`;
+    }),
     format.json()
   ),
   defaultMeta: { service: "BACKEND - NODE" },
@@ -39,3 +46,5 @@ if (process.env.NODE_ENV !== "production") {
     })
   );
 }
+
+export default logger;

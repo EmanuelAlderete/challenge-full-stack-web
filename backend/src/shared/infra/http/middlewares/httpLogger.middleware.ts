@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { logger } from "../config/winston.config";
+import logger from "../../../config/winston.config";
 
 export const HttpLoggerMiddleware = (
   req: Request,
