@@ -10,7 +10,7 @@ dotenv.config();
 const app = express();
 
 // Sets Helmet for improve security
-// app.use(helmet());
+app.use(helmet());
 
 // Define allowed origins
 app.use(
@@ -25,10 +25,11 @@ app.use(express.json());
 // Import routes
 app.use("/", routes);
 
-const PORT = process.env.PORT || 3000;
+const startServer = (port: number = 3000) => {
+  const server = app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+  });
+  return server;
+};
 
-app.listen(PORT, () => {
-  console.log(`Server is running at http://localhost:${PORT}`);
-});
-
-export default app;
+export { app, startServer };
