@@ -1,14 +1,16 @@
 import app from "../../../../src/shared/infra/http/server";
 import request from "supertest";
-import { Prisma } from "../../../../generated/prisma";
+import { PrismaClient } from "../../../../generated/prisma";
 
-describe("POST /register", () => {
+const prisma = new PrismaClient();
+
+describe("POST /api/users/register", () => {
   beforeEach(async () => {
-    await Prisma.user.deleteMany();
+    await prisma.user.deleteMany();
   });
 
   afterEach(async () => {
-    await Prisma.user.deleteMany();
+    await prisma.user.deleteMany();
   });
 
   it("should register a user successfully", async () => {
@@ -19,7 +21,7 @@ describe("POST /register", () => {
     };
 
     const response = await request(app)
-      .post("/register")
+      .post("/api/users/register")
       .send(payload)
       .expect(201);
 
