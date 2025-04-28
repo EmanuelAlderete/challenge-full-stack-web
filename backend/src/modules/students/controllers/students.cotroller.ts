@@ -41,9 +41,13 @@ export class StudentsController {
   update = async (req: Request, res: Response): Promise<void> => {
     logger.info(`Received request to update student.`, { body: req.body });
     try {
-      const { id, name, email } = req.body;
+      const { id } = req.params;
+      const { name, email } = req.body;
       const requestUserDto = new RequestStudentDto(name, email);
-      const student = await updateStudentUseCase.execute(id, requestUserDto);
+      const student = await updateStudentUseCase.execute(
+        Number(id),
+        requestUserDto
+      );
       logger.info(`Student updated successfully: [Student ID: ${student.id}]`);
       res.location(`/students/${student.id}`).status(200).json(student);
     } catch (error: any) {
