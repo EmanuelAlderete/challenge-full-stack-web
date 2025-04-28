@@ -5,6 +5,7 @@ import { CreateStudentUseCase } from "../useCases/CreateStudentUseCase";
 import { RequestStudentDto } from "../dtos/RequestStudentDto";
 import { ListStudentsUseCase } from "../useCases/ListStudentsUseCase";
 import { UpdateStudentUseCase } from "../useCases/UpdateStudentUseCase";
+import { CreateStudentDto } from "../dtos/CreateStudentDto";
 
 const studentRepository = new StudentRepositoryPrisma();
 const createStudentUseCase = new CreateStudentUseCase(studentRepository);
@@ -15,9 +16,8 @@ export class StudentsController {
   create = async (req: Request, res: Response): Promise<void> => {
     logger.info(`Received request to create student.`, { body: req.body });
     try {
-      const { name, email, ra, cpf } = req.body;
-      const requestUserDto = new RequestStudentDto(name, email, ra, cpf);
-      const student = await createStudentUseCase.execute(requestUserDto);
+      const studentDto: CreateStudentDto = req.body;
+      const student = await createStudentUseCase.execute(studentDto);
       logger.info(`Student created successfully: [Student ID: ${student.id}]`);
       res.location(`/students/${student.id}`).status(201).json(student);
     } catch (error: any) {
