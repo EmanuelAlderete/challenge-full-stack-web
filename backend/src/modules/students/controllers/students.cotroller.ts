@@ -6,6 +6,7 @@ import { RequestStudentDto } from "../dtos/RequestStudentDto";
 import { ListStudentsUseCase } from "../useCases/ListStudentsUseCase";
 import { UpdateStudentUseCase } from "../useCases/UpdateStudentUseCase";
 import { CreateStudentDto } from "../dtos/CreateStudentDto";
+import { UpdateStudentDto } from "../dtos/UpdateStudentDto";
 
 const studentRepository = new StudentRepositoryPrisma();
 const createStudentUseCase = new CreateStudentUseCase(studentRepository);
@@ -42,11 +43,10 @@ export class StudentsController {
     logger.info(`Received request to update student.`, { body: req.body });
     try {
       const { id } = req.params;
-      const { name, email } = req.body;
-      const requestUserDto = new RequestStudentDto(name, email);
+      const studentDto: CreateStudentDto = req.body;
       const student = await updateStudentUseCase.execute(
         Number(id),
-        requestUserDto
+        studentDto
       );
       logger.info(`Student updated successfully: [Student ID: ${student.id}]`);
       res.location(`/students/${student.id}`).status(200).json(student);
