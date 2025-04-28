@@ -6,5 +6,6 @@ const router = Router();
 const studentController = new StudentsController();
 
 router.post("/", studentController.create);
+router.get("/", studentController.index);
 
 export default router;
