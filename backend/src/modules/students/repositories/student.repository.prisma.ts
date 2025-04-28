@@ -61,4 +61,24 @@ export class StudentRepositoryPrisma implements IStudentRepository {
       );
     }
   }
+
+  async delete(id: number) {
+    try {
+      logger.info(`Inicializing deleting process (1/2). [ID: ${id}]`);
+      const deleteStudent = await prisma.student.delete({
+        where: {
+          id: id,
+        },
+      });
+      logger.info(
+        `Deleting process concluded (2/2). [ID: ${deleteStudent.id}]`
+      );
+      return deleteStudent;
+    } catch (error: any) {
+      logger.error(
+        `Error on STUDENT REPOSITORY during updating process: ${error.message}`,
+        { dbError: error }
+      );
+    }
+  }
 }
