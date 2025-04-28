@@ -5,13 +5,13 @@ import { CreateStudentUseCase } from "../useCases/CreateStudentUseCase";
 import { RequestStudentDto } from "../dtos/RequestStudentDto";
 import { ListStudentsUseCase } from "../useCases/ListStudentsUseCase";
 import { UpdateStudentUseCase } from "../useCases/UpdateStudentUseCase";
-import { CreateStudentDto } from "../dtos/CreateStudentDto";
-import { UpdateStudentDto } from "../dtos/UpdateStudentDto";
+import { DeleteStudentUseCase } from "../useCases/DeleteStudentUseCase";
 
 const studentRepository = new StudentRepositoryPrisma();
 const createStudentUseCase = new CreateStudentUseCase(studentRepository);
 const listStudentsUseCase = new ListStudentsUseCase(studentRepository);
 const updateStudentUseCase = new UpdateStudentUseCase(studentRepository);
+const deleteStudentUseCase = new DeleteStudentUseCase(studentRepository);
 
 export class StudentsController {
   create = async (req: Request, res: Response): Promise<void> => {
@@ -54,7 +54,24 @@ export class StudentsController {
       logger.error(`Error during student creation process: ${error.message}`, {
         error,
       });
-      res.status(500).json({ message: "Failed to create student" });
+      res.status(500).json({ message: "Failed to update student" });
+    }
+  };
+
+  delete = async (req: Request, res: Response): Promise<void> => {
+    logger.info(`Received request to delete student, [ID - ${req.params.id}]`);
+    try {
+      const { id } = req.params;
+      await deleteStudentUseCase.execute(Number(id));
+      logger.info(`Student delete successfully!`);
+      res
+        .status(200)
+        .json({ status: "sucess", message: "Student deleted successfully!" });
+    } catch (error: any) {
+      logger.error(`Error during student deleting process: ${error.message}`, {
+        error,
+      });
+      res.status(500).json({ message: "Failed to delete student" });
     }
   };
 }

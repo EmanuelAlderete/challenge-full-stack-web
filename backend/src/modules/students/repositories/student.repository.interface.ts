@@ -5,5 +5,5 @@ export interface IStudentRepository {
   all(): Promise<any>;
   // getById(id: number): Promise<any>;
   update(id: number, data: Partial<RequestStudentDto>): Promise<any>;
-  // delete(id: number): Promise<any>;
+  delete(id: number): Promise<any>;
 }
