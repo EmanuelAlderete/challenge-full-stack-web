@@ -3,9 +3,11 @@ import logger from "../../../shared/config/winston.config";
 import { StudentRepositoryPrisma } from "../repositories/student.repository.prisma";
 import { CreateStudentUseCase } from "../useCases/CreateStudentUseCase";
 import { RequestStudentDto } from "../dtos/RequestStudentDto";
+import { ListStudentsUseCase } from "../useCases/ListStudentsUseCase";
 
 const studentRepository = new StudentRepositoryPrisma();
 const createStudentUseCase = new CreateStudentUseCase(studentRepository);
+const listStudentsUseCase = new ListStudentsUseCase(studentRepository);
 
 export class StudentsController {
   create = async (req: Request, res: Response): Promise<void> => {
@@ -21,6 +23,16 @@ export class StudentsController {
         error,
       });
       res.status(500).json({ message: "Failed to create student" });
+    }
+  };
+
+  index = async (req: Request, res: Response): Promise<void> => {
+    logger.info(`Received request to list all students.`);
+    try {
+      const studensList = await listStudentsUseCase.execute();
+      res.status(200).json(studensList);
+    } catch (error: any) {
+      logger.error(`Error during retrieving students list: ${error.message}`);
     }
   };
 }

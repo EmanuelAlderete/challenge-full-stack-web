@@ -11,6 +11,7 @@ describe("/students - Endpoints", () => {
     const testPort = process.env.TEST_PORT || 3002;
     serverInstance = startServer(Number(testPort));
     await new Promise((resolve) => setTimeout(resolve, 100));
+    await prisma.student.deleteMany();
   });
 
   afterAll(async () => {
@@ -26,16 +27,8 @@ describe("/students - Endpoints", () => {
         });
       });
     }
-
+    await prisma.student.deleteMany();
     await prisma.$disconnect();
-  });
-
-  beforeEach(async () => {
-    await prisma.student.deleteMany();
-  });
-
-  afterEach(async () => {
-    await prisma.student.deleteMany();
   });
 
   it("[POST: /students] should register a student successfully", async () => {
@@ -60,5 +53,25 @@ describe("/students - Endpoints", () => {
     expect(response.body).toHaveProperty("email", payload.email);
     expect(response.body).toHaveProperty("ra", payload.ra);
     expect(response.body).toHaveProperty("cpf", payload.cpf);
+  });
+
+  it("[GET: /students] should return a list of students", async () => {
+    const response = await request(app).get("/api/students").expect(200);
+    expect(response.body).toBeDefined();
+    expect(Array.isArray(response.body)).toBe(true);
+  });
+
+  it("[PUT: /students/:id] should update a student", async () => {
+    const payload = {
+      name: "Student Updated",
+      email: "email@updated.com",
+    };
+    const response = await request(app)
+      .put("/api/students/1")
+      .send(payload)
+      .expect(200);
+    expect(response.body).toBeDefined();
+    expect(response.body).toHaveProperty("name", payload.name);
+    expect(response.body).toHaveProperty("email", payload.email);
   });
 });
