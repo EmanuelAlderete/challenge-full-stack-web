@@ -39,4 +39,26 @@ export class StudentRepositoryPrisma implements IStudentRepository {
       );
     }
   }
+
+  async update(id: number, { name, email }: Partial<RequestStudentDto>) {
+    try {
+      logger.info(`Inicializing updating process (1/2). [ID: ${id}]`);
+      const student = await prisma.student.update({
+        where: {
+          id: id,
+        },
+        data: {
+          name,
+          email,
+        },
+      });
+      logger.info(`Updating process concluded (2/2). [ID: ${student.id}]`);
+      return student;
+    } catch (error: any) {
+      logger.error(
+        `Error on STUDENT REPOSITORY during updating process: ${error.message}`,
+        { dbError: error }
+      );
+    }
+  }
 }
