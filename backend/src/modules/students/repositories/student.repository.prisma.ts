@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 export class StudentRepositoryPrisma implements IStudentRepository {
   async create({ name, email, ra, cpf }: RequestStudentDto) {
     try {
-      logger.info(`Inicializing creation process. [RA: ${ra}]`);
+      logger.info(`Inicializing creation process (1/2). [RA: ${ra}]`);
       const newStudent = await prisma.student.create({
         data: {
           name,
@@ -17,12 +17,25 @@ export class StudentRepositoryPrisma implements IStudentRepository {
           cpf,
         },
       });
-      logger.info(`Creation process concluded. [RA: ${newStudent.ra}]`);
+      logger.info(`Creation process concluded (2/2). [RA: ${newStudent.ra}]`);
       return newStudent;
     } catch (error: any) {
       logger.error(
         `Error on STUDENT REPOSITORY during creation process: ${error.message}`,
         { dbError: error }
+      );
+    }
+  }
+
+  async all() {
+    try {
+      logger.info(`Retrieving [STUDENTS LIST] from DB (1/2)`);
+      const studentsList = await prisma.student.findMany();
+      logger.info("All data retrieved successfully (2/2).");
+      return studentsList;
+    } catch (error: any) {
+      logger.error(
+        `Error on STUDENT REPOSITORY during retrieving all data process: ${error.message}`
       );
     }
   }
