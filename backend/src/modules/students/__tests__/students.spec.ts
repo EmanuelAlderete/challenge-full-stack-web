@@ -61,4 +61,10 @@ describe("/students - Endpoints", () => {
     expect(response.body).toHaveProperty("ra", payload.ra);
     expect(response.body).toHaveProperty("cpf", payload.cpf);
   });
+
+  it("[GET: /students] should return a list of students", async () => {
+    const response = await request(app).get("/api/students").expect(200);
+    expect(response.body).toBeDefined();
+    expect(Array.isArray(response.body)).toBe(true);
+  });
 });
