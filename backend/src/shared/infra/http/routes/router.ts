@@ -14,12 +14,12 @@ router.get("/api/ping", (_req, res) => {
   });
 });
 
-// Custom 404 Error
-// router.use("/", (req, res) => {
-//   res.status(404).json({ error: "API route not found" });
-// });
-
 router.use("/api/users", UserRoutes);
 router.use("/api/students", StudentsRoutes);
+
+// Custom 404 Error
+router.use("/", (req, res) => {
+  res.status(404).json({ error: "API route not found" });
+});
 
 export default router;
