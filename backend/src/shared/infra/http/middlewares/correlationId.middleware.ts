@@ -10,7 +10,6 @@ export const CorrelationIdMiddleware = (
   const correlationId = uuidv4();
 
   asyncLocalStorage.run({ correlationId }, () => {
-    (req as any).correlationId = correlationId;
     next();
   });
 };

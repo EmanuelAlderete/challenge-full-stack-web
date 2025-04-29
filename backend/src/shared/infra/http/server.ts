@@ -3,6 +3,9 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import cors from "cors";
 import routes from "./routes/router";
+import { CorrelationIdMiddleware } from "./middlewares/correlationId.middleware";
+import { HttpLoggerMiddleware } from "./middlewares/httpLogger.middleware";
+import { errorHandler } from "./middlewares/errorHandler.middleware";
 
 // Load .env variables
 dotenv.config();
@@ -19,11 +22,16 @@ app.use(
   })
 );
 
+app.use(CorrelationIdMiddleware);
+app.use(HttpLoggerMiddleware);
+
 // JSON middleware to parse requests
 app.use(express.json());
 
 // Import routes
 app.use("/", routes);
+
+app.use(errorHandler);
 
 const startServer = (port: number = 3000) => {
   const server = app.listen(port, () => {
