@@ -10,7 +10,6 @@ export class UpdateStudentUseCase {
     if (!student) {
       throw new NotFoundError(`Estudante com id ${id} não encontrado`);
     }
-    await this.studentRespository.update(id, data);
-    return student;
+    return await this.studentRespository.update(id, data);
   }
 }
