@@ -20,14 +20,7 @@ export class StudentRepositoryPrisma implements IStudentRepository {
   }
 
   async all() {
-    try {
-      const studentsList = await prisma.student.findMany();
-      return studentsList;
-    } catch (error: any) {
-      logger.error(
-        `Error on STUDENT REPOSITORY during retrieving all data process: ${error.message}`
-      );
-    }
+    return await prisma.student.findMany();
   }
 
   async update(id: number, { name, email }: UpdateStudentDto) {

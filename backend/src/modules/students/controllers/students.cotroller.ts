@@ -24,13 +24,8 @@ export class StudentsController {
   };
 
   index = async (req: Request, res: Response): Promise<void> => {
-    logger.info(`Received request to list all students.`);
-    try {
-      const studensList = await listStudentsUseCase.execute();
-      res.status(200).json(studensList);
-    } catch (error: any) {
-      logger.error(`Error during retrieving students list: ${error.message}`);
-    }
+    const studensList = await listStudentsUseCase.execute();
+    res.status(200).json(studensList);
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
