@@ -10,7 +10,6 @@ const studentController = new StudentsController();
 
 router.post("/", validate(CreateStudentSchema), studentController.create);
 router.get("/", studentController.index);
-router.put("/:id", studentController.update);
 router.delete("/:id", studentController.delete);
 router.put("/:id", validate(UpdateStudentSchema), studentController.update);
 
