@@ -7,4 +7,5 @@ export interface IStudentRepository {
   getById(id: number): Promise<any>;
   update(id: number, data: UpdateStudentDto): Promise<any>;
   delete(id: number): Promise<any>;
+  findMany(data: object): Promise<any>;
 }

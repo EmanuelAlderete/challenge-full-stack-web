@@ -8,22 +8,15 @@ const prisma = new PrismaClient();
 
 export class StudentRepositoryPrisma implements IStudentRepository {
   async create({ name, email, ra, cpf }: CreateStudentDto) {
-    try {
-      const newStudent = await prisma.student.create({
-        data: {
-          name,
-          email,
-          ra,
-          cpf,
-        },
-      });
-      return newStudent;
-    } catch (error: any) {
-      logger.error(
-        `Error on STUDENT REPOSITORY during creation process: ${error.message}`,
-        { dbError: error }
-      );
-    }
+    const newStudent = await prisma.student.create({
+      data: {
+        name,
+        email,
+        ra,
+        cpf,
+      },
+    });
+    return newStudent;
   }
 
   async all() {
@@ -38,7 +31,7 @@ export class StudentRepositoryPrisma implements IStudentRepository {
   }
 
   async update(id: number, { name, email }: UpdateStudentDto) {
-    const student = await prisma.student.update({
+    return await prisma.student.update({
       where: {
         id: id,
       },
@@ -47,7 +40,6 @@ export class StudentRepositoryPrisma implements IStudentRepository {
         email,
       },
     });
-    return student;
   }
 
   async delete(id: number) {
@@ -80,5 +72,9 @@ export class StudentRepositoryPrisma implements IStudentRepository {
         { dbError: error }
       );
     }
+  }
+
+  async findMany(data: object): Promise<any> {
+    return await prisma.student.findMany(data);
   }
 }
