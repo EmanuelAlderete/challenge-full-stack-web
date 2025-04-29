@@ -59,19 +59,11 @@ export class StudentRepositoryPrisma implements IStudentRepository {
   }
 
   async getById(id: number) {
-    try {
-      const student = await prisma.student.findUnique({
-        where: {
-          id: id,
-        },
-      });
-      return student;
-    } catch (error: any) {
-      logger.error(
-        `Error on STUDENT REPOSITORY during searching process: ${error.message}`,
-        { dbError: error }
-      );
-    }
+    return await prisma.student.findUnique({
+      where: {
+        id: id,
+      },
+    });
   }
 
   async findMany(data: object): Promise<any> {

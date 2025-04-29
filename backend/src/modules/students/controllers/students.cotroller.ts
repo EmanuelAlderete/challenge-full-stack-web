@@ -58,16 +58,8 @@ export class StudentsController {
   };
 
   getById = async (req: Request, res: Response): Promise<void> => {
-    logger.info(`Received request to find a student, [ID - ${req.params.id}]`);
-    try {
-      const { id } = req.params;
-      const student = await getStudentByIdUseCase.execute(Number(id));
-      res.status(200).json(student);
-    } catch (error: any) {
-      logger.error(`Error during student searching process: ${error.message}`, {
-        error,
-      });
-      res.status(500).json({ message: "Failed to search student" });
-    }
+    const { id } = req.params;
+    const student = await getStudentByIdUseCase.execute(Number(id));
+    res.status(200).json(student);
   };
 }
