@@ -17,9 +17,8 @@ export class StudentsController {
   create = async (req: Request, res: Response): Promise<void> => {
     logger.info(`Received request to create student.`, { body: req.body });
     try {
-      const { name, email, ra, cpf } = req.body;
-      const requestUserDto = new RequestStudentDto(name, email, ra, cpf);
-      const student = await createStudentUseCase.execute(requestUserDto);
+      const studentDto: CreateStudentDto = req.body;
+      const student = await createStudentUseCase.execute(studentDto);
       logger.info(`Student created successfully: [Student ID: ${student.id}]`);
       res.location(`/students/${student.id}`).status(201).json(student);
     } catch (error: any) {
@@ -44,11 +43,10 @@ export class StudentsController {
     logger.info(`Received request to update student.`, { body: req.body });
     try {
       const { id } = req.params;
-      const { name, email } = req.body;
-      const requestUserDto = new RequestStudentDto(name, email);
+      const studentDto: CreateStudentDto = req.body;
       const student = await updateStudentUseCase.execute(
         Number(id),
-        requestUserDto
+        studentDto
       );
       logger.info(`Student updated successfully: [Student ID: ${student.id}]`);
       res.location(`/students/${student.id}`).status(200).json(student);
