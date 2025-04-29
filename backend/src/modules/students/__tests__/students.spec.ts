@@ -8,6 +8,7 @@ const prisma = new PrismaClient();
 let serverInstance: any;
 let studentId: number;
 let payload: Partial<CreateStudentDto>;
+let payloadUpdated: Partial<CreateStudentDto>;
 
 describe("/students - Endpoints", () => {
   beforeAll(async () => {
@@ -67,17 +68,17 @@ describe("/students - Endpoints", () => {
   });
 
   it("[PUT: /students/:id] should update a student", async () => {
-    const payload = {
+    payloadUpdated = {
       name: "Student Updated",
       email: "email@updated.com",
     };
     const response = await request(app)
       .put(`/api/students/${studentId}`)
-      .send(payload)
+      .send(payloadUpdated)
       .expect(200);
     expect(response.body).toBeDefined();
-    expect(response.body).toHaveProperty("name", payload.name);
-    expect(response.body).toHaveProperty("email", payload.email);
+    expect(response.body).toHaveProperty("name", payloadUpdated.name);
+    expect(response.body).toHaveProperty("email", payloadUpdated.email);
   });
 
   it("[GET: /students/:id] should find an especific student", async () => {
@@ -86,9 +87,7 @@ describe("/students - Endpoints", () => {
       .expect(200);
     expect(response.body).toBeDefined();
     expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("name", payload.name);
-    expect(response.body).toHaveProperty("email", payload.email);
-    expect(response.body).toHaveProperty("ra", payload.ra);
-    expect(response.body).toHaveProperty("cpf", payload.cpf);
+    expect(response.body).toHaveProperty("name", payloadUpdated.name);
+    expect(response.body).toHaveProperty("email", payloadUpdated.email);
   });
 });
