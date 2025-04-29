@@ -48,23 +48,23 @@ describe("/students - Endpoints", () => {
       .send(payload)
       .expect(201);
 
-    studentId = response.body.id;
+    studentId = response.body.data.id;
 
     expect(response.headers.location).toBeDefined();
     expect(response.headers.location).toMatch(/^\/students\/\d+$/);
 
-    expect(response.body).toBeDefined();
-    expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("name", payload.name);
-    expect(response.body).toHaveProperty("email", payload.email);
-    expect(response.body).toHaveProperty("ra", payload.ra);
-    expect(response.body).toHaveProperty("cpf", payload.cpf);
+    expect(response.body.data).toBeDefined();
+    expect(response.body.data).toHaveProperty("id");
+    expect(response.body.data).toHaveProperty("name", payload.name);
+    expect(response.body.data).toHaveProperty("email", payload.email);
+    expect(response.body.data).toHaveProperty("ra", payload.ra);
+    expect(response.body.data).toHaveProperty("cpf", payload.cpf);
   });
 
   it("[GET: /students] should return a list of students", async () => {
     const response = await request(app).get("/api/students").expect(200);
-    expect(response.body).toBeDefined();
-    expect(Array.isArray(response.body)).toBe(true);
+    expect(response.body.data).toBeDefined();
+    expect(Array.isArray(response.body.data)).toBe(true);
   });
 
   it("[PUT: /students/:id] should update a student", async () => {
@@ -76,18 +76,18 @@ describe("/students - Endpoints", () => {
       .put(`/api/students/${studentId}`)
       .send(payloadUpdated)
       .expect(200);
-    expect(response.body).toBeDefined();
-    expect(response.body).toHaveProperty("name", payloadUpdated.name);
-    expect(response.body).toHaveProperty("email", payloadUpdated.email);
+    expect(response.body.data).toBeDefined();
+    expect(response.body.data).toHaveProperty("name", payloadUpdated.name);
+    expect(response.body.data).toHaveProperty("email", payloadUpdated.email);
   });
 
   it("[GET: /students/:id] should find an especific student", async () => {
     const response = await request(app)
       .get(`/api/students/${studentId}`)
       .expect(200);
-    expect(response.body).toBeDefined();
-    expect(response.body).toHaveProperty("id");
-    expect(response.body).toHaveProperty("name", payloadUpdated.name);
-    expect(response.body).toHaveProperty("email", payloadUpdated.email);
+    expect(response.body.data).toBeDefined();
+    expect(response.body.data).toHaveProperty("id");
+    expect(response.body.data).toHaveProperty("name", payloadUpdated.name);
+    expect(response.body.data).toHaveProperty("email", payloadUpdated.email);
   });
 });
