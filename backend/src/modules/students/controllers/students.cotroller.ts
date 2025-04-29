@@ -26,10 +26,10 @@ export class StudentsController {
   };
 
   index = async (req: Request, res: Response): Promise<void> => {
-    const studensList = await listStudentsUseCase.execute();
+    const studentsList = await listStudentsUseCase.execute();
     res.status(200).json({
       success: true,
-      data: studensList,
+      data: studentsList,
     });
   };
 
