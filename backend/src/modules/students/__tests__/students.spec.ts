@@ -1,11 +1,13 @@
 import { app, startServer } from "../../../../src/shared/infra/http/server";
 import request from "supertest";
 import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
+import { CreateStudentDto } from "../dtos/CreateStudentDto";
 
 const prisma = new PrismaClient();
 
 let serverInstance: any;
 let studentId: number;
+let payload: Partial<CreateStudentDto>;
 
 describe("/students - Endpoints", () => {
   beforeAll(async () => {
@@ -33,7 +35,7 @@ describe("/students - Endpoints", () => {
   });
 
   it("[POST: /students] should register a student successfully", async () => {
-    const payload = {
+    payload = {
       name: "Just Another Student",
       email: "justanother@student.com",
       ra: "infotads2020.02",
@@ -76,5 +78,17 @@ describe("/students - Endpoints", () => {
     expect(response.body).toBeDefined();
     expect(response.body).toHaveProperty("name", payload.name);
     expect(response.body).toHaveProperty("email", payload.email);
+  });
+
+  it("[GET: /students/:id] should find an especific student", async () => {
+    const response = await request(app)
+      .get(`/api/students/${studentId}`)
+      .expect(200);
+    expect(response.body).toBeDefined();
+    expect(response.body).toHaveProperty("id");
+    expect(response.body).toHaveProperty("name", payload.name);
+    expect(response.body).toHaveProperty("email", payload.email);
+    expect(response.body).toHaveProperty("ra", payload.ra);
+    expect(response.body).toHaveProperty("cpf", payload.cpf);
   });
 });
