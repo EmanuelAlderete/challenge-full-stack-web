@@ -1,4 +1,3 @@
-import { RequestStudentDto } from "../dtos/RequestStudentDto";
 import { IStudentRepository } from "../repositories/student.repository.interface";
 
 export class DeleteStudentUseCase {

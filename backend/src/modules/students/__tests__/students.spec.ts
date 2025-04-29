@@ -5,6 +5,7 @@ import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
 const prisma = new PrismaClient();
 
 let serverInstance: any;
+let studentId: number;
 
 describe("/students - Endpoints", () => {
   beforeAll(async () => {
@@ -44,6 +45,8 @@ describe("/students - Endpoints", () => {
       .send(payload)
       .expect(201);
 
+    studentId = response.body.id;
+
     expect(response.headers.location).toBeDefined();
     expect(response.headers.location).toMatch(/^\/students\/\d+$/);
 
@@ -67,7 +70,7 @@ describe("/students - Endpoints", () => {
       email: "email@updated.com",
     };
     const response = await request(app)
-      .put("/api/students/1")
+      .put(`/api/students/${studentId}`)
       .send(payload)
       .expect(200);
     expect(response.body).toBeDefined();
