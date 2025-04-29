@@ -24,7 +24,6 @@ export class CreateStudentUseCase {
     if (students.length > 0) {
       throw new ValidationError("Email, CPF ou RA já cadastrado");
     }
-    const student = await this.studentRepository.create(data);
-    return student;
+    return await this.studentRepository.create(data);
   }
 }
