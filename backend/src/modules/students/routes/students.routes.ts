@@ -12,5 +12,6 @@ router.post("/", validate(CreateStudentSchema), studentController.create);
 router.get("/", studentController.index);
 router.delete("/:id", studentController.delete);
 router.put("/:id", validate(UpdateStudentSchema), studentController.update);
+router.get("/:id", studentController.getById);
 
 export default router;

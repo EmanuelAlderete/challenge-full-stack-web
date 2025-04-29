@@ -1,12 +1,13 @@
 import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
 import { IStudentRepository } from "./student.repository.interface";
-import { RequestStudentDto } from "../dtos/RequestStudentDto";
 import logger from "../../../shared/config/winston.config";
+import { CreateStudentDto } from "../dtos/CreateStudentDto";
+import { UpdateStudentDto } from "../dtos/UpdateStudentDto";
 
 const prisma = new PrismaClient();
 
 export class StudentRepositoryPrisma implements IStudentRepository {
-  async create({ name, email, ra, cpf }: RequestStudentDto) {
+  async create({ name, email, ra, cpf }: CreateStudentDto) {
     try {
       logger.info(`Inicializing creation process (1/2). [RA: ${ra}]`);
       const newStudent = await prisma.student.create({
@@ -40,7 +41,7 @@ export class StudentRepositoryPrisma implements IStudentRepository {
     }
   }
 
-  async update(id: number, { name, email }: Partial<RequestStudentDto>) {
+  async update(id: number, { name, email }: UpdateStudentDto) {
     try {
       logger.info(`Inicializing updating process (1/2). [ID: ${id}]`);
       const student = await prisma.student.update({
@@ -77,6 +78,24 @@ export class StudentRepositoryPrisma implements IStudentRepository {
     } catch (error: any) {
       logger.error(
         `Error on STUDENT REPOSITORY during updating process: ${error.message}`,
+        { dbError: error }
+      );
+    }
+  }
+
+  async getById(id: number) {
+    try {
+      logger.info(`Inicializing searching process (1/2). [ID: ${id}]`);
+      const student = await prisma.student.findUnique({
+        where: {
+          id: id,
+        },
+      });
+      logger.info(`Searching process concluded (2/2). [ID: ${student?.id}]`);
+      return student;
+    } catch (error: any) {
+      logger.error(
+        `Error on STUDENT REPOSITORY during searching process: ${error.message}`,
         { dbError: error }
       );
     }

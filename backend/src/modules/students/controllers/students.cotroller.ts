@@ -2,16 +2,18 @@ import { Request, Response } from "express";
 import logger from "../../../shared/config/winston.config";
 import { StudentRepositoryPrisma } from "../repositories/student.repository.prisma";
 import { CreateStudentUseCase } from "../useCases/CreateStudentUseCase";
-import { RequestStudentDto } from "../dtos/RequestStudentDto";
+import { CreateStudentDto } from "../dtos/CreateStudentDto";
 import { ListStudentsUseCase } from "../useCases/ListStudentsUseCase";
 import { UpdateStudentUseCase } from "../useCases/UpdateStudentUseCase";
 import { DeleteStudentUseCase } from "../useCases/DeleteStudentUseCase";
+import { GetStudentByIdUseCase } from "../useCases/GetStudentByIdUseCase";
 
 const studentRepository = new StudentRepositoryPrisma();
 const createStudentUseCase = new CreateStudentUseCase(studentRepository);
 const listStudentsUseCase = new ListStudentsUseCase(studentRepository);
 const updateStudentUseCase = new UpdateStudentUseCase(studentRepository);
 const deleteStudentUseCase = new DeleteStudentUseCase(studentRepository);
+const getStudentByIdUseCase = new GetStudentByIdUseCase(studentRepository);
 
 export class StudentsController {
   create = async (req: Request, res: Response): Promise<void> => {
@@ -72,6 +74,20 @@ export class StudentsController {
         error,
       });
       res.status(500).json({ message: "Failed to delete student" });
+    }
+  };
+
+  getById = async (req: Request, res: Response): Promise<void> => {
+    logger.info(`Received request to find a student, [ID - ${req.params.id}]`);
+    try {
+      const { id } = req.params;
+      const student = await getStudentByIdUseCase.execute(Number(id));
+      res.status(200).json(student);
+    } catch (error: any) {
+      logger.error(`Error during student searching process: ${error.message}`, {
+        error,
+      });
+      res.status(500).json({ message: "Failed to search student" });
     }
   };
 }
