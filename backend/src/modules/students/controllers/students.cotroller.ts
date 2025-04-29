@@ -42,22 +42,10 @@ export class StudentsController {
   };
 
   update = async (req: Request, res: Response): Promise<void> => {
-    logger.info(`Received request to update student.`, { body: req.body });
-    try {
-      const { id } = req.params;
-      const studentDto: CreateStudentDto = req.body;
-      const student = await updateStudentUseCase.execute(
-        Number(id),
-        studentDto
-      );
-      logger.info(`Student updated successfully: [Student ID: ${student.id}]`);
-      res.location(`/students/${student.id}`).status(200).json(student);
-    } catch (error: any) {
-      logger.error(`Error during student creation process: ${error.message}`, {
-        error,
-      });
-      res.status(500).json({ message: "Failed to update student" });
-    }
+    const { id } = req.params;
+    const studentDto: CreateStudentDto = req.body;
+    const student = await updateStudentUseCase.execute(Number(id), studentDto);
+    res.location(`/students/${student.id}`).status(200).json(student);
   };
 
   delete = async (req: Request, res: Response): Promise<void> => {
