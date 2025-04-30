@@ -1,3 +1,10 @@
+<script setup>
+  import { shallowRef } from 'vue';
+  import { vMaska } from 'maska/vue';
+
+  const dialog = shallowRef(false);
+</script>
+
 <template>
   <v-dialog
     v-model="dialog"
@@ -25,6 +32,7 @@
             sm="6"
           >
             <v-text-field
+              autofocus
               label="Nome completo *"
               required
             />
@@ -46,6 +54,7 @@
             sm="6"
           >
             <v-text-field
+              v-maska="'###.###.###-##'"
               label="CPF*"
               required
             />
@@ -86,8 +95,3 @@
     </v-card>
   </v-dialog>
 </template>
-<script setup>
-  import { shallowRef } from 'vue'
-
-  const dialog = shallowRef(false)
-</script>
