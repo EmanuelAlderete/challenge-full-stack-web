@@ -15,7 +15,7 @@
     >
       {{ alertMessage }}
     </v-alert>
-    <v-card class="mx-auto px-6 py-8" max-width="400" width="100%">
+    <v-card outline class="mx-auto px-6 py-8" max-width="400" width="100%">
       <v-card-title class="text-center">Área de Registro</v-card-title>
       <v-card-subtitle class="text-center">
         Informe seus dados para acessar o sistema.</v-card-subtitle
@@ -44,7 +44,7 @@
           v-model="password"
           :readonly="loading"
           :rules="[required]"
-          label="Password"
+          label="Senha"
           type="password"
           placeholder="Enter your password"
           clearable
@@ -119,7 +119,10 @@ async function onSubmit() {
         password.value = null;
       }
     } else {
-      router.push("/login");
+      router.push({
+        path: "/login",
+        query: { success: "true" },
+      });
     }
   } catch (error) {
     console.error("Erro ao fazer a requisição:", error);
