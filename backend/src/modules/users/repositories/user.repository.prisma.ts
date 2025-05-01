@@ -7,24 +7,29 @@ import logger from "../../../shared/config/winston.config";
 const prisma = new PrismaClient();
 
 export class UserRepositoryPrisma implements IUserRepository {
+  getById(id: number): Promise<any> {
+    throw new Error("Method not implemented.");
+  }
   async create({ name, email, password }: RequestUserDto) {
-    try {
-      logger.info(`Inicializing creation process. [EMAIL: ${email}]`);
-      const hashedPassword = await bcrypt.hash(password, 10);
-      const newUser = await prisma.user.create({
-        data: {
-          name,
-          email,
-          password: hashedPassword,
-        },
-      });
-      logger.info(`Creation process concluded. [EMAIL: ${newUser.email}]`);
-      return newUser;
-    } catch (error: any) {
-      logger.error(
-        `Error on USER REPOSITORY during creation process: ${error.message}`,
-        { dbError: error }
-      );
+    const hashedPassword = await bcrypt.hash(password, 10);
+    return await prisma.user.create({
+      data: {
+        name,
+        email,
+        password: hashedPassword,
+      },
+    });
+  }
+  async findUnique(where: { id?: number; email?: string }): Promise<any> {
+    if (!where.id && !where.email) {
+      throw new Error("Either 'id' or 'email' must be provided.");
     }
+    return await prisma.user.findUnique({
+      where: where as { id: number } | { email: string },
+    });
+  }
+
+  async findMany(data: object): Promise<any> {
+    return await prisma.user.findMany(data);
   }
 }
