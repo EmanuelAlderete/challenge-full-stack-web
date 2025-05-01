@@ -13,6 +13,7 @@ declare module 'vue' {
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     Sidebar: typeof import('./src/components/Sidebar.vue')['default']
+    StudentFormDialog: typeof import('./src/components/StudentFormDialog.vue')['default']
     StudentsTable: typeof import('./src/components/StudentsTable.vue')['default']
   }
 }

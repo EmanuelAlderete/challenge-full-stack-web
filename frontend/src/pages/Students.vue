@@ -8,9 +8,7 @@
             class="align-self-center"
             label="Pesquisar estudante"
           >
-            <template #append>
-              <student-form-dialog />
-            </template>
+            <template #append> <StudentFormDialog /> </template>
           </v-text-field>
         </v-col>
       </v-row>
