@@ -16,14 +16,26 @@
     </v-container>
     <v-container>
       <v-row class="justify-center align-center">
-        <students-table />
+        <students-table :students="students" />
       </v-row>
     </v-container>
   </Dashboard>
 </template>
 <script setup>
 import Dashboard from "@/layouts/Dashboard.vue";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import { fetchStudents } from "@/services/studentsService";
+import { ca } from "vuetify/locale";
 
 const isSidebarOpen = ref(false);
+const students = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await fetchStudents();
+    students.value = Array.isArray(response) ? response : response.data;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+  }
+});
 </script>

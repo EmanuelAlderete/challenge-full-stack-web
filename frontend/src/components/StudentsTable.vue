@@ -1,9 +1,9 @@
 <template>
   <v-sheet class="w-100">
     <v-data-table
+      :items="students"
       :headers="headers"
       :hide-default-footer="students.length < 11"
-      :items="students"
     >
       <template #item.actions="{ item }">
         <div class="d-flex ga-2 justify-end">
@@ -67,95 +67,12 @@
 <script setup>
 import { ref, shallowRef } from "vue";
 
-const DEFAULT_RECORD = {
-  id: 1,
-  name: "João da Silva",
-  email: "luis",
-  ra: "top",
-  cpf: "123.456.789-00",
-  pages: 1,
-};
-
 defineProps({
-  items: {
+  students: {
     type: Array,
-    default: () => [],
+    required: true,
   },
 });
-const record = ref(DEFAULT_RECORD);
-const dialog = shallowRef(false);
-const students = ref([
-  {
-    id: 1,
-    name: "João da Silva",
-    email: "luis",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 2,
-    name: "Maria da Silva",
-    email: "maria",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 3,
-    name: "José da Silva",
-    email: "jose",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 4,
-    name: "Ana da Silva",
-    email: "ana",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 5,
-    name: "Carlos da Silva",
-    email: "carlos",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 6,
-    name: "Fernanda da Silva",
-    email: "fernanda",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 7,
-    name: "Roberto da Silva",
-    email: "roberto",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 8,
-    name: "Patrícia da Silva",
-    email: "patricia",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 9,
-    name: "Ricardo da Silva",
-    email: "ricardo",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-  {
-    id: 10,
-    name: "Juliana da Silva",
-    email: "juliana",
-    ra: "top",
-    cpf: "123.456.789-00",
-  },
-]);
 
 const headers = [
   { title: "RA", key: "ra", align: "start" },
@@ -164,6 +81,16 @@ const headers = [
   { title: "CPF", key: "cpf", align: "end" },
   { title: "Ações", key: "actions", align: "end", sortable: false },
 ];
+const DEFAULT_RECORD = {
+  id: 1,
+  name: "João da Silva",
+  email: "luis",
+  ra: "top",
+  cpf: "123.456.789-00",
+  pages: 1,
+};
+const record = ref(DEFAULT_RECORD);
+const dialog = shallowRef(false);
 
 function edit(id) {
   const found = students.value.find((student) => student.id === id);
