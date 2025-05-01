@@ -18,7 +18,7 @@
             color="medium-emphasis"
             icon="mdi-delete"
             size="small"
-            @click="remove(item.id)"
+            @click="$emit('delete-student', item.id)"
           />
         </div>
       </template>
