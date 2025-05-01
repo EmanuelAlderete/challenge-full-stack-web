@@ -18,8 +18,12 @@ export class UserController {
   };
 
   login = async (req: Request, res: Response): Promise<void> => {
-    const token = await loginUserUseCase.execute(req.body)
+    const token = await loginUserUseCase.execute(req.body);
 
-    res.status(200).json(token);
-  }
+    res.status(200).json({
+      success: true,
+      message: "Login realizado com sucesso.",
+      token: token,
+    });
+  };
 }
