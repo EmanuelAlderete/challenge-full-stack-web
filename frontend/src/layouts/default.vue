@@ -9,7 +9,7 @@
     <Sidebar v-model:is-drawer-open="isSidebarOpen" />
 
 
-    <v-main class="d-flex align-center justify-center" height="300">
+    <v-main class="d-flex justify-center">
       <v-container>
         <router-view />
       </v-container>

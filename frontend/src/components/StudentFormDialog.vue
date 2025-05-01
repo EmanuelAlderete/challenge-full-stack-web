@@ -14,7 +14,7 @@
       <v-btn
         class="text-none font-weight-regular"
         prepend-icon="mdi-plus"
-        text="Cadastrar Estudante"
+        text="Estudante"
         variant="outlined"
         v-bind="activatorProps"
       />

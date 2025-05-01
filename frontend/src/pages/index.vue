@@ -2,7 +2,7 @@
   <v-container>
     <v-row class="justify-center align-center">
       <v-col
-        class="d-inline-flex align-center justify-space-between"
+        class="d-flex align-center justify-space-between"
         cols="12"
         lg="12"
         md="12"
@@ -13,12 +13,12 @@
             <student-form-dialog />
           </template>
         </v-text-field>
-
       </v-col>
     </v-row>
+    <v-divider />
   </v-container>
-</template>
-
-<script setup>
-  //
-</script>
+  <v-container>
+    <v-row class="justify-center align-center">
+      <student-table />
+    </v-row>
+  </v-container></template>
