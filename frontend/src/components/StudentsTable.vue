@@ -44,10 +44,10 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-text-field v-model="record.cpf" label="CPF" readonly="true" />
+            <v-text-field v-model="record.cpf" label="CPF" readonly />
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field v-model="record.ra" label="RA" readonly="true" />
+            <v-text-field v-model="record.ra" label="RA" readonly />
           </v-col>
         </v-row>
       </template>
@@ -67,12 +67,14 @@
 <script setup>
 import { ref, shallowRef } from "vue";
 
-defineProps({
+const props = defineProps({
   students: {
     type: Array,
     required: true,
   },
 });
+
+const emit = defineEmits(["update-student", "delete-student"]);
 
 const headers = [
   { title: "RA", key: "ra", align: "start" },
@@ -81,19 +83,17 @@ const headers = [
   { title: "CPF", key: "cpf", align: "end" },
   { title: "Ações", key: "actions", align: "end", sortable: false },
 ];
-const DEFAULT_RECORD = {
-  id: 1,
-  name: "João da Silva",
-  email: "luis",
-  ra: "top",
-  cpf: "123.456.789-00",
-  pages: 1,
-};
-const record = ref(DEFAULT_RECORD);
+
+const record = ref({});
 const dialog = shallowRef(false);
 
 function edit(id) {
-  const found = students.value.find((student) => student.id === id);
+  const found = props.students.find((student) => student.id === id);
+
+  if (!found) {
+    console.error(`Student with id ${id} not found`);
+    return;
+  }
 
   record.value = {
     id: found.id,
@@ -101,22 +101,17 @@ function edit(id) {
     ra: found.ra,
     email: found.email,
     cpf: found.cpf,
-    pages: found.pages,
   };
 
   dialog.value = true;
 }
 
 function remove(id) {
-  const index = students.value.findIndex((student) => student.id === id);
-  students.value.splice(index, 1);
+  emit("delete-student", id);
 }
 
 function save() {
-  const index = students.value.findIndex(
-    (student) => student.id === record.value.id
-  );
-  students.value[index] = record.value;
+  emit("update-student", { ...record.value });
 
   dialog.value = false;
 }

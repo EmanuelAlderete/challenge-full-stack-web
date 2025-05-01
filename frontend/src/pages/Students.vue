@@ -16,7 +16,11 @@
     </v-container>
     <v-container>
       <v-row class="justify-center align-center">
-        <students-table :students="students" />
+        <students-table
+          :students="students"
+          @update-student="handleUpdateStudent"
+          @delete-student="handleDeleteStudent"
+        />
       </v-row>
     </v-container>
   </Dashboard>
@@ -24,8 +28,11 @@
 <script setup>
 import Dashboard from "@/layouts/Dashboard.vue";
 import { onMounted, ref } from "vue";
-import { fetchStudents } from "@/services/studentsService";
-import { ca } from "vuetify/locale";
+import {
+  fetchStudents,
+  updateStudent,
+  deleteStudent,
+} from "@/services/studentsService";
 
 const isSidebarOpen = ref(false);
 const students = ref([]);
@@ -38,4 +45,30 @@ onMounted(async () => {
     console.error("Error fetching students:", error);
   }
 });
+
+async function handleUpdateStudent(updatedStudent) {
+  try {
+    const updatedData = await updateStudent(updatedStudent);
+    const index = students.value.findIndex(
+      (student) => student.id === updatedStudent.id
+    );
+    if (index !== -1) {
+      students.value[index] = updatedData;
+    }
+  } catch (error) {
+    console.error("Failed to update student:", error);
+  }
+}
+
+async function handleDeleteStudent(id) {
+  try {
+    await deleteStudent(id);
+    const index = students.value.findIndex((student) => student.id === id);
+    if (index !== -1) {
+      students.value.splice(index, 1);
+    }
+  } catch (error) {
+    console.error("Failed to delete student:", error);
+  }
+}
 </script>
