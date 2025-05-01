@@ -10,7 +10,12 @@
         </template>
 
         <v-list>
-          <v-list-item title="Sair" prepend-icon="mdi-logout" link />
+          <v-list-item
+            title="Sair"
+            prepend-icon="mdi-logout"
+            link
+            @click="logout"
+          />
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -26,6 +31,9 @@
 </template>
 <script setup>
 import { ref } from "vue";
+import { useLogout } from "@/composables/auth/logout";
+
+const { logout } = useLogout();
 
 const isSidebarOpen = ref(false);
 </script>
