@@ -1,7 +1,13 @@
 <template>
   <v-navigation-drawer app :model-value="isDrawerOpen">
     <v-list nav>
-      <v-list-item link title="Estudantes" />
+      <v-list-subheader>MÓDULOS</v-list-subheader>
+      <v-list-item
+        prepend-icon="mdi-school-outline"
+        link
+        title="Estudantes"
+        to="/students"
+      />
     </v-list>
   </v-navigation-drawer>
 </template>

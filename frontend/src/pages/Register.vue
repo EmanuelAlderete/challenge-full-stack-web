@@ -119,7 +119,7 @@ async function onSubmit() {
         password.value = null;
       }
     } else {
-      router.push("/students");
+      router.push("/login");
     }
   } catch (error) {
     console.error("Erro ao fazer a requisição:", error);
