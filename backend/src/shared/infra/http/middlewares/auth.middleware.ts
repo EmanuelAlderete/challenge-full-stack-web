@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt  from "jsonwebtoken";
 import { JwtUserPayload } from "../../../types/auth";
+import { AppError } from "../../../errors/AppError";
 
 declare global {
     namespace Express {
@@ -16,10 +17,11 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
   const token = req.headers["authorization"]?.split(" ")[1];
 
   if (!token) {
-    return res.status(401).json({
+    res.status(401).json({
         success: false,
         message: "Usuário não autenticado."
       });
+      return;
   }
 
   try {
@@ -28,10 +30,15 @@ export const authMiddleware = (req: Request, res: Response, next: NextFunction) 
     next();
   } catch (err) {
     if (err instanceof jwt.JsonWebTokenError) {
-      return res.status(401).json({
+      res.status(401).json({
         success: false,
         message: "Token inválido."
       });
+      return;
+    } else {
+      throw new AppError("Erro interno do servidor", 500);
     }
   }
+
+  
 };
