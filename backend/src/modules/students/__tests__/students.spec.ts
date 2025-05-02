@@ -2,6 +2,7 @@ import { app, startServer } from "../../../../src/shared/infra/http/server";
 import request from "supertest";
 import { PrismaClient } from "../../../../prisma/generated/prisma-client-js";
 import { CreateStudentDto } from "../dtos/CreateStudentDto";
+import jwt from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
@@ -9,6 +10,7 @@ let serverInstance: any;
 let studentId: number;
 let payload: Partial<CreateStudentDto>;
 let payloadUpdated: Partial<CreateStudentDto>;
+let token: string;
 
 describe("/students - Endpoints", () => {
   beforeAll(async () => {
@@ -16,6 +18,10 @@ describe("/students - Endpoints", () => {
     serverInstance = startServer(Number(testPort));
     await new Promise((resolve) => setTimeout(resolve, 100));
     await prisma.student.deleteMany();
+
+    const userPayload = { id: 1, email: "testuser@example.com" }; // Payload fictício
+    const JWT_SECRET = String(process.env.JWT_SECRET);
+    token = jwt.sign(userPayload, JWT_SECRET, { expiresIn: "1h" });
   });
 
   afterAll(async () => {
@@ -45,6 +51,8 @@ describe("/students - Endpoints", () => {
 
     const response = await request(app)
       .post("/api/students")
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
       .send(payload)
       .expect(201);
 
@@ -62,7 +70,12 @@ describe("/students - Endpoints", () => {
   });
 
   it("[GET: /students] should return a list of students", async () => {
-    const response = await request(app).get("/api/students").expect(200);
+    const response = await request(app)
+      .get("/api/students")
+      .set("Authorization", `Bearer ${token}`)
+      .send(payload)
+      .expect(200);
+
     expect(response.body.data).toBeDefined();
     expect(Array.isArray(response.body.data)).toBe(true);
   });
@@ -74,6 +87,7 @@ describe("/students - Endpoints", () => {
     };
     const response = await request(app)
       .put(`/api/students/${studentId}`)
+      .set("Authorization", `Bearer ${token}`)
       .send(payloadUpdated)
       .expect(200);
     expect(response.body.data).toBeDefined();
@@ -84,6 +98,7 @@ describe("/students - Endpoints", () => {
   it("[GET: /students/:id] should find an especific student", async () => {
     const response = await request(app)
       .get(`/api/students/${studentId}`)
+      .set("Authorization", `Bearer ${token}`)
       .expect(200);
     expect(response.body.data).toBeDefined();
     expect(response.body.data).toHaveProperty("id");

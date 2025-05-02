@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserRoutes from "../../../../modules/users/routes/user.routes";
 import StudentsRoutes from "../../../../modules/students/routes/students.routes";
+import { authMiddleware } from "../middlewares/auth.middleware";
 
 const router = Router();
 // Ping server
@@ -11,7 +12,8 @@ router.get("/api/ping", (_req, res) => {
 });
 
 router.use("/api/users", UserRoutes);
-router.use("/api/students", StudentsRoutes);
+
+router.use("/api/students", authMiddleware, StudentsRoutes);
 
 // Custom 404 Error
 router.use("/", (req, res) => {
