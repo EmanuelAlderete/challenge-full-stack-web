@@ -20,7 +20,7 @@ export class StudentsController {
     const student = await createStudentUseCase.execute(studentDto);
     res.location(`/students/${student.id}`).status(201).json({
       success: true,
-      message: "Estudando criado com sucesso!",
+      message: "Aluno criado com sucesso!",
       data: student,
     });
   };
@@ -39,7 +39,7 @@ export class StudentsController {
     const student = await updateStudentUseCase.execute(Number(id), studentDto);
     res.location(`/students/${student.id}`).status(200).json({
       success: true,
-      message: "Estudando atualizado com sucesso!",
+      message: "Aluno atualizado com sucesso!",
       data: student,
     });
   };
@@ -50,7 +50,7 @@ export class StudentsController {
 
     res
       .status(200)
-      .json({ success: true, message: "Estudante deletado com sucesso!" });
+      .json({ success: true, message: "Aluno deletado com sucesso!" });
   };
 
   getById = async (req: Request, res: Response): Promise<void> => {

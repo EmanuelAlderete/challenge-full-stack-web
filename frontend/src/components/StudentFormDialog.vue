@@ -11,13 +11,13 @@ const dialog = shallowRef(false);
       <v-btn
         class="text-none font-weight-regular"
         prepend-icon="mdi-plus"
-        text="Estudante"
+        text="Aluno"
         variant="outlined"
         v-bind="activatorProps"
       />
     </template>
 
-    <v-card prepend-icon="mdi-account-school" title="Cadastrar Estudante">
+    <v-card prepend-icon="mdi-account-school" title="Cadastrar Aluno">
       <v-card-text>
         <v-row dense>
           <v-col cols="12" md="6" sm="6">

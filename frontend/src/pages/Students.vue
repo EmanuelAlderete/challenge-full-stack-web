@@ -21,7 +21,7 @@
           <v-text-field
             append-inner-icon="mdi-magnify"
             class="align-self-center"
-            label="Pesquisar estudante"
+            label="Pesquisar aluno"
           >
             <template #append> <StudentFormDialog /> </template>
           </v-text-field>
