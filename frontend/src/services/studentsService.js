@@ -62,3 +62,26 @@ export async function deleteStudent(id) {
     throw error;
   }
 }
+
+export async function createStudent(data) {
+  try {
+    const response = await fetch(`http://localhost:3000/api/students/`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to create student");
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (error) {
+    console.error("Failed to create student:", error);
+    throw error;
+  }
+}

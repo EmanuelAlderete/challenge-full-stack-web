@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
+import { isTokenValid } from "@/utils/tokenValidator";
 
 const routes = [
   { path: "/login", component: () => import("@/pages/Login.vue") },
@@ -19,7 +20,8 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  const isAuthenticated = isTokenValid(token);
 
   if ((to.path === "/login" || to.path === "/register") && isAuthenticated) {
     next("/students");

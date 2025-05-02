@@ -4,6 +4,7 @@
       :items="students"
       :headers="headers"
       :hide-default-footer="students.length < 11"
+      :search="search"
     >
       <template #item.actions="{ item }">
         <div class="d-flex ga-2 justify-end">
@@ -37,17 +38,27 @@
       <template #text>
         <v-row>
           <v-col cols="12">
-            <v-text-field v-model="record.name" label="Nome" />
+            <v-text-field
+              v-model="name"
+              v-bind="nameAttrs"
+              :error-messages="errors.name"
+              label="Nome"
+            />
           </v-col>
           <v-col cols="12">
-            <v-text-field v-model="record.email" label="Email" />
+            <v-text-field
+              v-model="email"
+              v-bind="emailAttrs"
+              :error-messages="errors.email"
+              label="Email"
+            />
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-text-field v-model="record.cpf" label="CPF" readonly />
+            <v-text-field v-model="cpf" label="CPF" readonly />
           </v-col>
           <v-col cols="12" md="6">
-            <v-text-field v-model="record.ra" label="RA" readonly />
+            <v-text-field v-model="ra" label="RA" readonly />
           </v-col>
         </v-row>
       </template>
@@ -65,6 +76,8 @@
   </v-dialog>
 </template>
 <script setup>
+import { studentSchema } from "@/utils/studentZodObject";
+import { useForm } from "vee-validate";
 import { ref, shallowRef } from "vue";
 
 const props = defineProps({
@@ -72,10 +85,12 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  search: {
+    type: String,
+  },
 });
 
 const emit = defineEmits(["update-student", "delete-student"]);
-
 const headers = [
   { title: "RA", key: "ra", align: "start" },
   { title: "Nome", key: "name" },
@@ -86,6 +101,24 @@ const headers = [
 
 const record = ref({});
 const dialog = shallowRef(false);
+const validationSchema = studentSchema;
+
+const { values, errors, defineField, validate } = useForm({
+  validationSchema,
+});
+
+const [name, nameAttrs] = defineField("name", {
+  validateOnModelUpdate: false,
+});
+const [email, emailAttrs] = defineField("email", {
+  validateOnModelUpdate: false,
+});
+const [ra, raAttrs] = defineField("ra", {
+  validateOnModelUpdate: false,
+});
+const [cpf, cpfAttrs] = defineField("cpf", {
+  validateOnModelUpdate: false,
+});
 
 function edit(id) {
   const found = props.students.find((student) => student.id === id);
@@ -95,13 +128,11 @@ function edit(id) {
     return;
   }
 
-  record.value = {
-    id: found.id,
-    name: found.name,
-    ra: found.ra,
-    email: found.email,
-    cpf: found.cpf,
-  };
+  record.id = id;
+  name.value = found.name;
+  email.value = found.email;
+  ra.value = found.ra;
+  cpf.value = found.cpf;
 
   dialog.value = true;
 }
@@ -110,9 +141,12 @@ function remove(id) {
   emit("delete-student", id);
 }
 
-function save() {
-  emit("update-student", { ...record.value });
+async function save() {
+  const { valid, errors } = await validate();
 
-  dialog.value = false;
+  if (valid) {
+    emit("update-student", { id: record.id, ...values });
+    dialog.value = false;
+  }
 }
 </script>

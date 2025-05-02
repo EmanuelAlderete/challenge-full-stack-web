@@ -22,8 +22,11 @@
             append-inner-icon="mdi-magnify"
             class="align-self-center"
             label="Pesquisar aluno"
+            v-model="search"
           >
-            <template #append> <StudentFormDialog /> </template>
+            <template #append>
+              <StudentFormDialog @student-added="refreshTable" />
+            </template>
           </v-text-field>
         </v-col>
       </v-row>
@@ -35,6 +38,7 @@
           :students="students"
           @update-student="handleUpdateStudent"
           @delete-student="confirmDeleteStudent"
+          :search="search"
         />
       </v-row>
     </v-container>
@@ -53,6 +57,7 @@ const isSidebarOpen = ref(false);
 const students = ref([]);
 const isDeleteDialogOpen = ref(false);
 const studentToDelete = ref(null);
+const search = ref("");
 
 onMounted(async () => {
   try {
@@ -99,5 +104,14 @@ async function handleDeleteStudent(id) {
 function confirmDeleteStudent(id) {
   studentToDelete.value = id;
   isDeleteDialogOpen.value = true;
+}
+
+async function refreshTable() {
+  try {
+    const response = await fetchStudents();
+    students.value = Array.isArray(response) ? response : response.data;
+  } catch (error) {
+    console.error("Error fetching students:", error);
+  }
 }
 </script>
