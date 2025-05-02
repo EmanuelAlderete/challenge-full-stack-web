@@ -1,127 +1,125 @@
-+A Educação - Full Stack Web Developer
-===================
+# 🚀 Instruções para Rodar o Projeto
 
-[![N|Solid](https://maisaedu.com.br/hubfs/site-grupo-a/logo-mais-a-educacao.svg)](https://maisaedu.com.br/) 
+Este projeto é composto por duas aplicações: **Backend (API Node.js + Prisma)** e **Frontend (Vue 3 + Vuetify)**, integradas via Docker.
 
-O objetivo deste desafio é avaliar as competências técnicas dos candidatos a desenvolvedor Full Stack Web na Maior Plataforma de Educação do Brasil.
+---
 
-Será solicitado o desenvolvimento de uma Aplicação que realize a Matrícula do Aluno na Turma de Programação Web da instituição Edtech. Regras e requisitos técnicos estão detalhadas neste documento.
+## 🧰 Pré-requisitos
 
-# Especificações Técnicas
-- **Front-end:**
-  - Framework JS: [Vue.js](https://vuejs.org/)
-  - Framework de UI: [Vuetify](https://vuetifyjs.com/)
-- **API:** NodeJS
-- **Banco de Dados:** Postgress ou MySQL
-- **Idioma de escrita do código:** Inglês
+Antes de iniciar, certifique-se de ter os seguintes softwares instalados:
 
-# Requisitos
-## Contextualização
-Considere que uma Instituição de Ensino Superior precisa de uma solução para cadastrar e gerenciar matrículas de alunos em turmas online. Para realizar a matrícula, é necessário que o cadastro do aluno tenha sido realizado.
+- [Git](https://git-scm.com/)
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
 
-O desafio consiste em criar uma aplicação para o cadastro de alunos conforme os critérios de aceitação.
+---
 
-## Mockups de interface
-A seguir, são apresentados alguns mockups de interface como um guia para a criação do front-end. Fique à vontade para usar sua criatividade na criação do front-end.
+## 🧭 Passo a Passo para Rodar o Projeto
 
-* Listagem de Alunos
-![Listagem de Alunos](/mockups/studants_list.png)
+### 1. Clone o repositório
 
-* Criar/Editar Aluno
-![Listagem de Alunos](/mockups/studants_save.png)
+```bash
+git clone https://github.com/EmanuelAlderete/challenge-full-stack-web.git
+cd challenge-full-stack-web
+```
 
-## Histórias do Usuário
-- **Sendo** um usuário administrativo da Instituição
-- **Quero** gerenciar cadastros de alunos
-- **Para** que eu possa realizar a matrícula do aluno
+---
 
-### Critérios de aceite: 
+### 2. Verifique se as portas estão livres
 
-#### Cenário: Cadastrar novo aluno
-- **Dado** que estou na tela de Consulta de Alunos
-- **Quando** clico em Cadastrar Aluno
-- **Então** abre a tela de Cadastro do Aluno
-- **E** exibe os campos obrigatórios vazios
-####
-- **Dado** que inseri dados válidos nos campos
-- **Quando** clico em Salvar
-- **Então** cria o novo aluno na base
-- **E** retorna mensagem de sucesso
-####
-- **Dado** que inseri dados válidos nos campos
-- **Quando** clico em Cancelar
-- **Então** retorna para tela Consulta de Alunos
-- **E** não persiste a gravação dos dados no banco 
+O projeto utiliza as seguintes portas:
 
-#### Cenário: Listar alunos cadastrados 
-- **Dado** que estou no Módulo Acadêmico
-- **Quando** clico no menu Alunos
-- **Então** abre a tela de Consulta de Alunos 
-- **E** exibe opção Cadastrar Aluno ao topo
-- **E** lista dados dos alunos cadastrados
-- **E** exibe opção Editar por aluno
-- **E** exibe opção Excluir por aluno
+- `3000` → Backend (API)
+- `5173` → Frontend (Vue + Vite)
 
-#### Cenário: Editar cadastro de aluno
-- **Dado** que estou na listagem de alunos
-- **Quando** clico em Editar aluno
-- **Então** abre a tela de Cadastro do Aluno 
-- **E** exibe os campos do cadastro preenchidos
-- **E** habilita alteração dos campos editáveis
-####
-- **Dado** que estou na tela de Cadastro do Aluno
-- **Quando** clica em Salvar
-- **Então** grava os dados editáveis na base
-####
-- **Dado** que estou na tela de Cadastro do Aluno
-- **Quando** clica em Cancelar
-- **Então** retorna para a tela de Consulta de Alunos
-- **E** não persiste a gravação dos dados
+Certifique-se de que **nenhum outro processo** está utilizando essas portas:
 
-#### Cenário: Excluir cadastro de aluno
-- **Dado** que estou na listagem de alunos
-- **Quando** clico em Excluir aluno
-- **Então** exibe a modal de confirmação de exclusão
-####
-- **Dado** que estou na modal de confirmação de exclusão 
-- **Quando** clico em Confirmar
-- **Então** então exclui o registro do aluno
-####
-- **Dado** que estou na modal de confirmação de exclusão
-- **Quando** clico em Cancelar
-- **Então** então fecha a modal e não persiste a exclusão
+```bash
+lsof -i :3000
+lsof -i :5173
+```
 
-## Campos obrigatórios:
-- **Nome** (editável)
-- **Email** (editável)
-- **RA** (não editável) (chave única)
-- **CPF** (não editável)
+Se necessário, finalize os processos em conflito.
 
-# Critérios de avaliação
-- Qualidade de escrita do código
-- Organização do projeto
-- Qualidade da API
-- Lógica da solução implementada
-- Qualidade da camada de persistência
-- Utilização do Git (quantidade e descrição dos commits, Git Flow, ...)
-- Validações
-- Tratamento de erros
-- Padrões de projeto e arquitetura
+---
 
-# Desejável
-- Testes de unidade
-- Documentação da arquitetura de solução
+### 3. Suba os containers
 
-# Diferenciais
-- Segurança da aplicação (autenticação, autorização, ...)
+Execute o comando abaixo para construir e iniciar todos os serviços:
 
-# Instruções de entrega
-1. Crie um fork do repositório no seu GitHub
-2. Faça o push do código desenvolvido no seu Github
-3. Inclua um arquivo chamado COMMENTS.md explicando
-    - Decisão da arquitetura utilizada
-    - Lista de bibliotecas de terceiros utilizadas
-    - O que você melhoraria se tivesse mais tempo
-    - Quais requisitos obrigatórios que não foram entregues
-4. Informe ao recrutador quando concluir o desafio junto com o link do repositório
-5. Após revisão do projeto junto com a equipe de desevolvimento deixe seu repositório privado
+```bash
+docker compose up --build
+```
+
+Aguarde a finalização do build. O backend e o frontend serão iniciados automaticamente.
+
+---
+
+### 4. Acesse a aplicação no navegador
+
+Abra seu navegador e acesse:
+
+```
+http://localhost:5173
+```
+
+A interface Vue estará funcionando e conectada à API.
+
+---
+
+## 🗂 Estrutura Esperada de Pastas
+
+```
+📦 nome-do-repositorio
+ ┣ 📂 backend
+ ┣ 📂 frontend
+ ┣ 📄 docker-compose.yml
+ ┣ 📄 README.md
+```
+
+---
+
+## 🛠️ Dicas para Desenvolvimento
+
+- Para visualizar os logs de forma interativa:
+
+  ```bash
+  docker compose logs -f
+  ```
+
+- Para reiniciar apenas um dos serviços:
+
+  ```bash
+  docker compose restart backend
+  docker compose restart frontend
+  ```
+
+- Para acessar o shell dentro de um container:
+
+  ```bash
+  docker exec -it nome_do_container sh
+  ```
+
+> Use `docker ps` para descobrir o nome exato do container em execução.
+
+---
+
+## ❌ Possíveis Problemas
+
+- **Erro de porta em uso**:
+
+  - Libere a porta ou altere a configuração no `docker-compose.yml`.
+
+- **Problemas com cache no Vite**:
+
+  - Tente limpar o cache do navegador ou reiniciar o serviço do frontend.
+
+- **Alterações no Prisma não refletidas**:
+
+  - Lembre-se de rodar `npx prisma generate` ou reiniciar o backend.
+
+---
+
+## ✅ Pronto!
+
+Se tudo estiver funcionando, você verá a aplicação web carregando em `http://localhost:5173`, com conexão ativa com a API em `http://localhost:3000`.
