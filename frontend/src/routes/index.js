@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { isTokenValid } from "@/utils/tokenValidator";
 
 const routes = [
+  { path: "/", redirect: "/students" },
   { path: "/login", component: () => import("@/pages/Login.vue") },
   {
     path: "/register",
